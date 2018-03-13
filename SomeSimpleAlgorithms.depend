@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1520702753 source:e:\workspace\codeblocks\somesimplealgorithms\graph.cpp
+	"Graph.h"
+
+1520699863 e:\workspace\codeblocks\somesimplealgorithms\graph.h
+	<time.h>
+	<stdlib.h>
+
+1520702828 source:e:\workspace\codeblocks\somesimplealgorithms\main.cpp
+	<iostream>
+	"SortAlgorithm.h"
+	"Graph.h"
+	<time.h>
+	<Windows.h>
+	<stdlib.h>
+
+1520661251 e:\workspace\codeblocks\somesimplealgorithms\sortalgorithm.h
+	<stdlib.h>
+
