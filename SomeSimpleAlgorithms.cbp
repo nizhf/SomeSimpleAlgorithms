@@ -34,6 +34,9 @@
 		</Compiler>
 		<Unit filename="Graph.cpp" />
 		<Unit filename="Graph.h" />
+		<Unit filename="MyList.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="SortAlgorithm.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>

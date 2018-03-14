@@ -1,3 +1,6 @@
+#ifndef SORTALGORITHM_H_INCLUDED
+#define SORTALGORITHM_H_INCLUDED
+
 #include <stdlib.h>
 
 template<typename T>
@@ -325,3 +328,5 @@ inline T* SortAlgorithm<T>::mergeSortRecursive2(T arr[], T reg[], int a, int b, 
 	}
 	return merge1;
 }
+
+#endif // SORTALGORITHM_H_INCLUDED

@@ -1,3 +1,6 @@
+#ifndef GRAPH_H_INCLUDED
+#define GRAPH_H_INCLUDED
+
 #include <time.h>
 #include <stdlib.h>
 
@@ -38,4 +41,6 @@ struct vertice {
     int range;
     struct vertice *next, *last;
 };
+
+#endif // GRAPH_H_INCLUDED
 

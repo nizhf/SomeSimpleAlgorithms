@@ -1,6 +1,7 @@
 #include <iostream>
 #include "SortAlgorithm.h"
 #include "Graph.h"
+#include "MyList.h"
 #include <time.h>
 #include <Windows.h>
 #include <stdlib.h>
@@ -8,13 +9,14 @@
 using namespace std;
 
 void showSort();
+void showList();
 void showGraph();
 
 int main()
 {
     bool exit = false;
     do {
-        cout << "\nMain Menu\n1. Sort algorithm\n2. Graph\n3. Search algorithm\nOther. Exit\n";
+        cout << "\nMain Menu\n1. Sort algorithm\n2. List\n3. Graph\nOther. Exit\n";
         int option;
         exit = false;
         cin >> option;
@@ -23,9 +25,10 @@ int main()
             showSort();
             break;
         case 2:
-            showGraph();
+            showList();
             break;
         case 3:
+            showGraph();
             break;
         default:
             exit = true;
@@ -336,3 +339,118 @@ void showGraph() {
     while (!exit);
     delete g;
 }
+
+void showList() {
+    cout << "Count: ";
+    int count;
+    cin >> count;
+
+    MyList<int> *myList = new MyList<int>;
+    for (int i = 0; i < count; i++) {
+        int number;
+        cout << i << ". number: ";
+        cin >> number;
+        myList->pushBack(number);
+    }
+    cout << "All numbers: \n";
+    for (int i = 0; i < myList->size(); i++) {
+        cout << myList->at(i) << " ";
+    }
+    cout << "\n" << myList->back() << " " << myList->front();
+    cout << "\n" << myList->popBack();
+    cout << " " << myList->popFront();
+
+    cout << "\nAll numbers after pop: \n";
+    for (int i = 0; i < myList->size(); i++) {
+        cout << myList->at(i) << " ";
+    }
+
+    myList->insert(0, 111);
+    cout << "\nAll numbers: \n";
+    for (int i = 0; i < myList->size(); i++) {
+        cout << myList->at(i) << " ";
+    }
+    myList->insert(3, 999);
+    cout << "\nAll numbers: \n";
+    for (int i = 0; i < myList->size(); i++) {
+        cout << myList->at(i) << " ";
+    }
+
+    cout << "\n" << myList->remove(4);
+    cout << " " << myList->remove(0);
+    cout << " " << myList->pushFront(0);
+    cout << "\nAll numbers: \n";
+    for (int i = 0; i < myList->size(); i++) {
+        cout << myList->at(i) << " ";
+    }
+
+    myList->swap(2, 5);
+    cout << "\nAll numbers after swap 1: \n";
+    for (int i = 0; i < myList->size(); i++) {
+        cout << myList->at(i) << " ";
+    }
+
+    myList->swap(2, 3);
+    cout << "\nAll numbers after swap 2: \n";
+    for (int i = 0; i < myList->size(); i++) {
+        cout << myList->at(i) << " ";
+    }
+
+    myList->swap(6, 8);
+    cout << "\nAll numbers after swap 3: \n";
+    for (int i = 0; i < myList->size(); i++) {
+        cout << myList->at(i) << " ";
+    }
+
+    myList->swap(0, 3);
+    cout << "\nAll numbers after swap 4: \n";
+    for (int i = 0; i < myList->size(); i++) {
+        cout << myList->at(i) << " ";
+    }
+
+    myList->swap(0, 1);
+    cout << "\nAll numbers after swap 5: \n";
+    for (int i = 0; i < myList->size(); i++) {
+        cout << myList->at(i) << " ";
+    }
+
+    myList->swap(7, 8);
+    cout << "\nAll numbers after swap 6: \n";
+    for (int i = 0; i < myList->size(); i++) {
+        cout << myList->at(i) << " ";
+    }
+
+    cout << "\nsearch: " << myList->search(0);
+    auto result = myList->searchAll(0);
+    cout << "\nAll numbers found: \n";
+    for (int i = 0; i < myList->searchCount(0); i++) {
+        cout << result[i] << " ";
+    }
+
+    myList->sort();
+    cout << "\nAll numbers after sort: \n";
+    for (int i = 0; i < myList->size(); i++) {
+        cout << myList->at(i) << " ";
+    }
+
+    cout << "\nBenchmark: ";
+    int benchmark;
+    cin >> benchmark;
+    srand((unsigned)time(NULL));
+    MyList<int> *benchmarkList = new MyList<int>;
+    for (int i = 0; i < benchmark; i++) {
+        benchmarkList->pushBack(rand() % benchmark);
+    }
+    DWORD timeStart, timeStop;
+    timeStart = GetTickCount();
+    benchmarkList->sort();
+    timeStop = GetTickCount();
+    cout << (timeStop - timeStart) << "ms\n";
+
+    delete myList;
+    delete benchmarkList;
+}
+
+
+
+
