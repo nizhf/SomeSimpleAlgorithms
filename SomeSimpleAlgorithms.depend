@@ -1,15 +1,17 @@
 # depslib dependency file v1.0
-1520702923 source:e:\workspace\codeblocks\somesimplealgorithms\graph.cpp
+1521110713 source:e:\workspace\codeblocks\somesimplealgorithms\graph.cpp
 	"Graph.h"
 
-1520913720 e:\workspace\codeblocks\somesimplealgorithms\graph.h
+1521176952 e:\workspace\codeblocks\somesimplealgorithms\graph.h
 	<time.h>
 	<stdlib.h>
+	"MyList.h"
 
-1521041582 source:e:\workspace\codeblocks\somesimplealgorithms\main.cpp
+1521181418 source:e:\workspace\codeblocks\somesimplealgorithms\main.cpp
 	<iostream>
 	"SortAlgorithm.h"
-	"Graph.h"
+	"GraphMatrix.h"
+	"GraphList.h"
 	"MyList.h"
 	<time.h>
 	<Windows.h>
@@ -18,6 +20,17 @@
 1520913997 e:\workspace\codeblocks\somesimplealgorithms\sortalgorithm.h
 	<stdlib.h>
 
-1521041571 e:\workspace\codeblocks\somesimplealgorithms\mylist.h
+1521179902 e:\workspace\codeblocks\somesimplealgorithms\mylist.h
 	<stdlib.h>
+
+1521176915 e:\workspace\codeblocks\somesimplealgorithms\graphmatrix.h
+	<stdlib.h>
+	<time.h>
+	"Graph.h"
+
+1521197053 e:\workspace\codeblocks\somesimplealgorithms\graphlist.h
+	<stdlib.h>
+	<time.h>
+	"MyList.h"
+	"Graph.h"
 

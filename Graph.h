@@ -3,44 +3,35 @@
 
 #include <time.h>
 #include <stdlib.h>
+#include "MyList.h"
 
 class Graph
 {
 public:
-    Graph(int v = 10);
-    ~Graph();
-    void createEmptyGraph();
-    void generateRandomEdges(int maxRange, int rate);
-    void addVertice();
-    void deleteVertice(int v);
-    void addEdge(int v1, int v2, int range = 1);
-    void deleteEdge(int v1, int v2);
-    int getEdgeMatrix(int v1, int v2);
-    int getEdgeList(int v1, int v2);
-    int* getEdgeList(int v);
-    int* getEdgeRangeList(int v);
-    int getEdgeCount(int v);
-    int getTotalVertice();
-    int getTotalEdge();
+    virtual ~Graph();
+
+    virtual void createEmptyGraph() = 0;
+    virtual bool generateRandomEdges(int maxRange, int rate) = 0;
+
+    virtual bool addVertice() = 0;
+    virtual bool deleteVertice(int v) = 0;
+
+    virtual bool addEdge(int v1, int v2, int range = 1) = 0;
+    virtual bool deleteEdge(int v1, int v2) = 0;
+
+    virtual int getEdge(int v1, int v2) = 0;
+    virtual int getEdgeCount(int v) = 0;
+
+    virtual int getTotalVertice() = 0;
+    virtual int getTotalEdge() = 0;
 
 private:
-    int v; //number of vertices
-    int e; //number of edges
-    int **matrix; //adjacency matrix
-    struct verticeList *beginList, *endList;
+
 };
 
-struct verticeList {
-    int number;
-    struct verticeList *next, *last;
-    struct vertice *beginVertice, *endVertice;
-};
+inline Graph::~Graph() {
 
-struct vertice {
-    int number;
-    int range;
-    struct vertice *next, *last;
-};
+}
 
 #endif // GRAPH_H_INCLUDED
 

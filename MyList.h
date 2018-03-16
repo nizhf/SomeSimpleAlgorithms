@@ -29,25 +29,28 @@ public:
 
     //all index begins with 0!
     T at(int position);
+    int keyAt(int position);
     T back(); //return the last Element
     T front(); //return the first Element
     T popBack(); //return the last Element and delete it
     T popFront(); //return the first Element and delete it
 
-    T pushBack(T data, int key = 0); //insert the Element after the last Element
-    T pushFront(T data, int key = 0); //insert the Element in front of the first Element
+    bool pushBack(T data, int key = 0); //insert the Element after the last Element
+    bool pushFront(T data, int key = 0); //insert the Element in front of the first Element
 
-    T insert(int position, T data, int key = 0); //insert the Element after the position
-    T remove(int position); //remove the Element on position
+    bool insert(int position, T data, int key = 0); //insert the Element after the position
+    bool remove(int position); //remove the Element on position
+    bool removeKey(int key); //remove all Elements with key
+    bool removeData(T data); //remove all Elements with data
 
     int size(); //return the length of the List
 
     void sort(bool sequence = true);
     void sortSelection(bool sequence = true);
 
-    void swap(int i1, int i2); //swap data and keys with index i1 and i2
-    void swapElement(int i1, int i2); //swap Elements with index i1 and i2
-    void swapIgnoreKey(int i1, int i2); //only swap data, not the key
+    bool swap(int i1, int i2); //swap data and keys with index i1 and i2
+    bool swapElement(int i1, int i2); //swap Elements with index i1 and i2
+    bool swapIgnoreKey(int i1, int i2); //only swap data, not the key
     T search(int key); //return the first data with key
     T* searchAll(int key); //return all data with key
     int searchCount(int key); //return the count of data with key
@@ -95,7 +98,7 @@ inline void MyList<T>::initialize() {
 template<typename T>
 inline T MyList<T>::at(int position) {
     if (length == 0 || position >= length)
-        return T(0);
+        throw "invalid index!";
     if (position == 0)
         return front();
     if (position == length - 1)
@@ -108,9 +111,24 @@ inline T MyList<T>::at(int position) {
 }
 
 template<typename T>
+inline int MyList<T>::keyAt(int position) {
+    if (length == 0 || position >= length)
+        throw "invalid index!";
+    if (position == 0)
+        return first->key;
+    if (position == length - 1)
+        return last->key;
+
+    Element<T> *temp = first;
+    for (int i = 0; i < position; i++)
+        temp = temp->next;
+    return temp->key;
+}
+
+template<typename T>
 inline T MyList<T>::back() {
     if (length == 0)
-        return T(0);
+        throw "List is empty!";
     else
         return last->data;
 }
@@ -118,7 +136,7 @@ inline T MyList<T>::back() {
 template<typename T>
 inline T MyList<T>::front() {
     if (length == 0)
-        return T(0);
+        throw "List is empty!";
     else
         return first->data;
 }
@@ -126,7 +144,7 @@ inline T MyList<T>::front() {
 template<typename T>
 inline T MyList<T>::popBack() {
     if (length == 0)
-        return T(0);
+        throw "List is empty!";
     else {
         T data = last->data;
         Element<T> *temp = last;
@@ -144,7 +162,7 @@ inline T MyList<T>::popBack() {
 template<typename T>
 inline T MyList<T>::popFront() {
     if (length == 0)
-        return T(0);
+        throw "List is empty!";
     else {
         T data = first->data;
         Element<T> *temp = first;
@@ -160,7 +178,7 @@ inline T MyList<T>::popFront() {
 }
 
 template<typename T>
-inline T MyList<T>::pushBack(T data, int key) {
+inline bool MyList<T>::pushBack(T data, int key) {
     if (length == 0) {
         Element<T> *newElement = new Element<T>(data, key);
         newElement->next = NULL;
@@ -176,11 +194,11 @@ inline T MyList<T>::pushBack(T data, int key) {
         last = newElement;
     }
     length++;
-    return data;
+    return true;
 }
 
 template<typename T>
-inline T MyList<T>::pushFront(T data, int key) {
+inline bool MyList<T>::pushFront(T data, int key) {
     if (length == 0) {
         Element<T> *newElement = new Element<T>(data, key);
         newElement->next = NULL;
@@ -196,11 +214,11 @@ inline T MyList<T>::pushFront(T data, int key) {
         first = newElement;
     }
     length++;
-    return data;
+    return true;
 }
 
 template<typename T>
-inline T MyList<T>::insert(int position, T data, int key) {
+inline bool MyList<T>::insert(int position, T data, int key) {
     if (position <= 0)
         return pushFront(data, key);
     if (position >= length - 1)
@@ -215,27 +233,68 @@ inline T MyList<T>::insert(int position, T data, int key) {
     newElement->previous->next = newElement;
     newElement->next->previous = newElement;
     length++;
-    return data;
+    return true;
 }
 
 template<typename T>
-inline T MyList<T>::remove(int position) {
+inline bool MyList<T>::remove(int position) {
     if (position >= length || position < 0)
-        return T(0);
-    if (position == 0)
-        return popFront();
-    if (position == length - 1)
-        return popBack();
+        return false;
+    if (position == 0) {
+        popFront();
+        return true;
+    }
+    if (position == length - 1) {
+        popBack();
+        return true;
+    }
 
     Element<T> *temp = first;
     for (int i = 0; i < position; i++)
         temp = temp->next;
     temp->previous->next = temp->next;
     temp->next->previous = temp->previous;
-    T data = temp->data;
     length--;
     delete temp;
-    return data;
+    return true;
+}
+
+template<typename T>
+inline bool MyList<T>::removeKey(int key) {
+    Element<T> *temp = first;
+    int tempLength = length;
+    bool found = false;
+    for (int i = 0; i < tempLength; i++) {
+        if (temp->key == key) {
+            temp = temp->next;
+            remove(i);
+            found = true;
+        }
+        else
+            temp = temp->next;
+    }
+    if (found)
+        return true;
+    return false;
+}
+
+template<typename T>
+inline bool MyList<T>::removeData(T data) {
+    Element<T> *temp = first;
+    int tempLength = length;
+    bool found = false;
+    for (int i = 0; i < tempLength; i++) {
+        if (temp->data == data) {
+            temp = temp->next;
+            remove(i);
+            found = true;
+        }
+        else
+            temp = temp->next;
+    }
+    if (found)
+        return true;
+    return false;
 }
 
 template<typename T>
@@ -302,9 +361,9 @@ inline void MyList<T>::quickSort(T arr[], int a, int b, bool order) {
 }
 
 template<typename T>
-inline void MyList<T>::swap(int i1, int i2) {
+inline bool MyList<T>::swap(int i1, int i2) {
     if (i1 == i2 || i1 < 0 || i1 >= length || i2 < 0 || i2 >= length)
-        return;
+        return false;
 
     int i3 = i1;
     if (i1 > i2) {
@@ -326,12 +385,14 @@ inline void MyList<T>::swap(int i1, int i2) {
     temp1->data = temp2->data;
     temp2->key = tempKey;
     temp2->data = tempData;
+
+    return true;
 }
 
 template<typename T>
-inline void MyList<T>::swapElement(int i1, int i2) {
+inline bool MyList<T>::swapElement(int i1, int i2) {
     if (i1 == i2 || i1 < 0 || i1 >= length || i2 < 0 || i2 >= length)
-        return;
+        return false;
 
     int i3 = i1;
     if (i1 > i2) {
@@ -376,12 +437,14 @@ inline void MyList<T>::swapElement(int i1, int i2) {
         temp2Next->previous = temp1;
     if (i2 - i1 != 1)
         temp2Pre->next = temp1;
+
+    return true;
 }
 
 template<typename T>
-inline void MyList<T>::swapIgnoreKey(int i1, int i2) {
+inline bool MyList<T>::swapIgnoreKey(int i1, int i2) {
     if (i1 == i2 || i1 < 0 || i1 >= length || i2 < 0 || i2 >= length)
-        return;
+        return false;
 
     int i3 = i1;
     if (i1 > i2) {
@@ -400,6 +463,8 @@ inline void MyList<T>::swapIgnoreKey(int i1, int i2) {
     T tempData = temp1->data;
     temp1->data = temp2->data;
     temp2->data = tempData;
+
+    return true;
 }
 
 template<typename T>
@@ -410,7 +475,7 @@ inline T MyList<T>::search(int key) {
             return temp->data;
         temp = temp->next;
     }
-    return T(0);
+    throw "not found";
 }
 
 template<typename T>

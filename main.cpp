@@ -1,6 +1,7 @@
 #include <iostream>
 #include "SortAlgorithm.h"
-#include "Graph.h"
+#include "GraphMatrix.h"
+#include "GraphList.h"
 #include "MyList.h"
 #include <time.h>
 #include <Windows.h>
@@ -10,13 +11,16 @@ using namespace std;
 
 void showSort();
 void showList();
-void showGraph();
+void showGraphMatrix();
+void printGraphMatrix(GraphMatrix *g);
+void showGraphList();
+void printGraphList(GraphList *g);
 
 int main()
 {
     bool exit = false;
     do {
-        cout << "\nMain Menu\n1. Sort algorithm\n2. List\n3. Graph\nOther. Exit\n";
+        cout << "\nMain Menu\n1. Sort algorithm\n2. List\n3. Graph Matrix\n4. Graph List\nOther. Exit\n";
         int option;
         exit = false;
         cin >> option;
@@ -28,7 +32,10 @@ int main()
             showList();
             break;
         case 3:
-            showGraph();
+            showGraphMatrix();
+            break;
+        case 4:
+            showGraphList();
             break;
         default:
             exit = true;
@@ -239,107 +246,6 @@ void showSort() {
 }
 
 
-void showGraph() {
-    bool graphCreated = false;
-    bool exit = false;
-    Graph *g = NULL;
-    int v1, v2, range;
-    int deleteV;
-    do {
-        exit = false;
-        int operation;
-        cout << "\nGraph menu \n 1. Create Graph \n 2. Add Vertice \n 3. Delete Vertice \n 4. Add Edge \n 5. Delete Edge \n Other. Quit\n";
-        cin >> operation;
-        if (!graphCreated && operation > 1 && operation < 6) {
-            cout << "You must first create a graph! \n";
-            operation = 1;
-        }
-        switch (operation) {
-        case 1:
-            cout << "Graph size: ";
-            int gsize;
-            cin >> gsize;
-            g = new Graph(gsize);
-
-            char random;
-            cout << "Random generate edges? (y/n): ";
-            cin >> random;
-            if (random == 'y') {
-                int maxRange;
-                int rate;
-                cout << "Max range: ";
-                cin >> maxRange;
-                cout << "Rate: ";
-                cin >> rate;
-                g->generateRandomEdges(maxRange, rate);
-            }
-            for (int i = 0; i < g->getTotalVertice(); i++) {
-                for (int j = 0; j < g->getTotalVertice(); j++) {
-                    cout << " " << g->getEdgeMatrix(i, j) << " ";
-                }
-                cout << "\n";
-            }
-
-            graphCreated = true;
-            break;
-        case 2:
-            cout << "Add Vertice:\n";
-            g->addVertice();
-            for (int i = 0; i < g->getTotalVertice(); i++) {
-                for (int j = 0; j < g->getTotalVertice(); j++) {
-                    cout << " " << g->getEdgeMatrix(i, j) << " ";
-                }
-                cout << "\n";
-            }
-            break;
-        case 3:
-            cout << "Delete Vertice: ";
-            cin >> deleteV;
-            g->deleteVertice(deleteV);
-            for (int i = 0; i < g->getTotalVertice(); i++) {
-                for (int j = 0; j < g->getTotalVertice(); j++) {
-                    cout << " " << g->getEdgeMatrix(i, j) << " ";
-                }
-                cout << "\n";
-            }
-            break;
-        case 4:
-            cout << "Add Edge: \nFirst Vertice: ";
-            cin >> v1;
-            cout << "Second Vertice: ";
-            cin >> v2;
-            cout << "Range: ";
-            cin >> range;
-            g->addEdge(v1, v2, range);
-            for (int i = 0; i < g->getTotalVertice(); i++) {
-                for (int j = 0; j < g->getTotalVertice(); j++) {
-                    cout << " " << g->getEdgeMatrix(i, j) << " ";
-                }
-                cout << "\n";
-            }
-            break;
-        case 5:
-            cout << "Delete Edge: \nFirst Vertice: ";
-            cin >> v1;
-            cout << "Second Vertice: ";
-            cin >> v2;
-            g->deleteEdge(v1, v2);
-            for (int i = 0; i < g->getTotalVertice(); i++) {
-                for (int j = 0; j < g->getTotalVertice(); j++) {
-                    cout << " " << g->getEdgeMatrix(i, j) << " ";
-                }
-                cout << "\n";
-            }
-            break;
-        default:
-            exit = true;
-            break;
-        }
-    }
-    while (!exit);
-    delete g;
-}
-
 void showList() {
     cout << "Count: ";
     int count;
@@ -450,6 +356,194 @@ void showList() {
     delete myList;
     delete benchmarkList;
 }
+
+
+void showGraphMatrix() {
+    bool graphCreated = false;
+    bool exit = false;
+    GraphMatrix *g = NULL;
+    int v1, v2, range;
+    do {
+        exit = false;
+        int operation;
+        cout << "\nGraph Matrix menu \n 1. Create Graph \n 2. Add Vertice \n 3. Delete Vertice \n 4. Add Edge \n 5. Delete Edge \n Other. Quit\n";
+        cin >> operation;
+        if (!graphCreated && operation > 1 && operation < 6) {
+            cout << "You must first create a graph! \n";
+            operation = 1;
+        }
+        switch (operation) {
+        case 1:
+            cout << "Graph size: ";
+            int gsize;
+            cin >> gsize;
+            delete g;
+            g = new GraphMatrix(gsize);
+
+            char random;
+            cout << "Random generate edges? (y/n): ";
+            cin >> random;
+            if (random == 'y') {
+                int maxRange;
+                int rate;
+                cout << "Max range: ";
+                cin >> maxRange;
+                cout << "Rate: ";
+                cin >> rate;
+                g->generateRandomEdges(maxRange, rate);
+            }
+            printGraphMatrix(g);
+            graphCreated = true;
+            break;
+
+        case 2:
+            cout << "Add Vertice:\n";
+            g->addVertice();
+            printGraphMatrix(g);
+            break;
+
+        case 3:
+            cout << "Delete Vertice: ";
+            int deleteV;
+            cin >> deleteV;
+            g->deleteVertice(deleteV);
+            printGraphMatrix(g);
+            break;
+        case 4:
+            cout << "Add Edge: \nFirst Vertice: ";
+            cin >> v1;
+            cout << "Second Vertice: ";
+            cin >> v2;
+            cout << "Range: ";
+            cin >> range;
+            g->addEdge(v1, v2, range);
+            printGraphMatrix(g);
+            break;
+        case 5:
+            cout << "Delete Edge: \nFirst Vertice: ";
+            cin >> v1;
+            cout << "Second Vertice: ";
+            cin >> v2;
+            g->deleteEdge(v1, v2);
+            printGraphMatrix(g);
+            break;
+        default:
+            exit = true;
+            break;
+        }
+    }
+    while (!exit);
+    delete g;
+}
+
+void printGraphMatrix(GraphMatrix *g) {
+    cout << "\nMatrix: \n";
+    for (int i = 0; i < g->getTotalVertice(); i++) {
+        for (int j = 0; j < g->getTotalVertice(); j++) {
+            cout << " " << g->getEdge(i, j) << " ";
+        }
+        cout << "\n";
+    }
+}
+
+
+void showGraphList() {
+    bool graphCreated = false;
+    bool exit = false;
+    GraphList *g = NULL;
+    int v1, v2, range;
+    do {
+        exit = false;
+        int operation;
+        cout << "\nGraph List menu \n 1. Create Graph \n 2. Add Vertice \n 3. Delete Vertice \n 4. Add Edge \n 5. Delete Edge \n Other. Quit\n";
+        cin >> operation;
+        if (!graphCreated && operation > 1 && operation < 6) {
+            cout << "You must first create a graph! \n";
+            operation = 1;
+        }
+        switch (operation) {
+        case 1:
+            cout << "Graph size: ";
+            int gsize;
+            cin >> gsize;
+            delete g;
+            g = new GraphList(gsize);
+
+            char random;
+            cout << "Random generate edges? (y/n): ";
+            cin >> random;
+            if (random == 'y') {
+                int maxRange;
+                int rate;
+                cout << "Max range: ";
+                cin >> maxRange;
+                cout << "Rate: ";
+                cin >> rate;
+                g->generateRandomEdges(maxRange, rate);
+            }
+            try {printGraphList(g);}
+            catch (const char *err) {cout << err << endl;}
+            graphCreated = true;
+            break;
+        case 2:
+            cout << "Add Vertice:\n";
+            g->addVertice();
+            printGraphList(g);
+            break;
+        case 3:
+            cout << "Delete Vertice: ";
+            int deleteV;
+            cin >> deleteV;
+            if (!g->deleteVertice(deleteV))
+                cout << "invalid position! \n";
+            printGraphList(g);
+            break;
+        case 4:
+            cout << "Add Edge: \nFirst Vertice: ";
+            cin >> v1;
+            cout << "Second Vertice: ";
+            cin >> v2;
+            cout << "Range: ";
+            cin >> range;
+            if (!g->addEdge(v1, v2, range))
+                cout << "invalid position! \n";
+            printGraphList(g);
+            break;
+        case 5:
+            cout << "Delete Edge: \nFirst Vertice: ";
+            cin >> v1;
+            cout << "Second Vertice: ";
+            cin >> v2;
+            if (!g->deleteEdge(v1, v2))
+                cout << "invalid position! \n";
+            printGraphList(g);
+            break;
+        default:
+            exit = true;
+            break;
+        }
+    }
+    while (!exit);
+    delete g;
+}
+
+void printGraphList(GraphList *g) {
+    cout << "\nList: \n";
+    for (int i = 0; i < g->getTotalVertice(); i++) {
+        cout << g->getVerticeNumberAt(i) << ": ";
+        for (int j = 0; j < g->getTotalVertice(); j++) {
+            int range = g->getEdge(g->getVerticeNumberAt(i), g->getVerticeNumberAt(j));
+            if (range > 0)
+                cout << " " << g->getVerticeNumberAt(j) << "-" << range << " ";
+        }
+        cout << "\n";
+    }
+}
+
+
+
+
+
 
 
 
