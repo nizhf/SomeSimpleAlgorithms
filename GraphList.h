@@ -32,7 +32,10 @@ public:
 
     void initializeNode();
     bool isConnected();
-    void DFS(int v);
+    bool isCycle();
+    bool isTree();
+
+    bool DFS(int v); //true - meet a visited vertex; false - not
 
     MyList<int> dijkstra(int v1, int v2);
 
@@ -238,36 +241,40 @@ inline void GraphList::initializeNode() {
 }
 
 inline bool GraphList::isConnected() {
-    if (directed) {
-        for (int i = 0; i < getTotalVertex(); i++) {
-            initializeNode();
-            DFS(getVertexNumberAt(i));
-            for (int j = 0; j < getTotalVertex(); j++) {
-                if (!nodeList->at(j)->visited)
-                    return false;
-            }
-        }
-        return true;
+    initializeNode();
+    DFS(getVertexNumberAt(0));
+    for (int i = 0; i < getTotalVertex(); i++) {
+        if (!nodeList->at(i)->visited)
+            return false;
     }
-    else {
-        DFS(getVertexNumberAt(0));
-        for (int i = 0; i < getTotalVertex(); i++) {
-            if (!nodeList->at(i)->visited)
-                return false;
-        }
-        return true;
-    }
-
+    return true;
 
 }
 
-inline void GraphList::DFS(int v) {
-    if (nodeList->search(v)->visited) return;
+inline bool GraphList::isCycle() {
+    initializeNode();
+    for (int i = 0; i < getTotalVertex(); i++) {
+        initializeNode();
+        if (DFS(getVertexNumberAt(i)))
+            return true;
+    }
+    return false;
+}
+
+inline bool GraphList::isTree() {
+    return !isCycle() && isConnected();
+}
+
+inline bool GraphList::DFS(int v) {
+    bool meet = false;
+    if (nodeList->search(v)->visited) return true;
     nodeList->search(v)->visited = true;
     for (int i = 0; i < getEdgeCount(v); i++) {
         int vNext = edgeList->search(v)->keyAt(i);
-        DFS(vNext);
+        if (DFS(vNext))
+            meet = true;
     }
+    return meet;
 }
 
 inline MyList<int> GraphList::dijkstra(int v1, int v2) {

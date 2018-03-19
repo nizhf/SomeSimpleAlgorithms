@@ -455,7 +455,7 @@ void showGraphList() {
     do {
         exit = false;
         int operation;
-        cout << "\nGraph List menu \n 1. Create Graph \n 2. Add Vertex \n 3. Delete Vertex \n 4. Add Edge \n 5. Delete Edge \n 6. Test for Connected \n 7. Find Shortest Path \n Other. Quit\n";
+        cout << "\nGraph List menu \n 1. Create Graph \n 2. Add Vertex \n 3. Delete Vertex \n 4. Add Edge \n 5. Delete Edge \n 6. Graph Properties \n 7. Find Shortest Path \n Other. Quit\n";
         cin >> operation;
         if (!graphCreated && operation > 1 && operation < 8) {
             cout << "You must first create a graph! \n";
@@ -519,9 +519,9 @@ void showGraphList() {
             printGraphList(g);
             break;
         case 6:
-            bool connected;
-            connected = g->isConnected();
-            cout << "This Graph is " << (connected ? "connected" : "not connected") << "." << endl;
+            cout << "This Graph is " << (g->isConnected() ? "connected" : "not connected") << ", ";
+            cout << (g->isCycle() ? "cyclic" : "acyclic") << " and ";
+            cout << (g->isTree() ? "a tree." : "not a tree.") << endl;
             break;
         case 7:
             cout << "Find Shortest Path" << endl << "First Vertex: ";
