@@ -1,8 +1,6 @@
 #ifndef SORTALGORITHM_H_INCLUDED
 #define SORTALGORITHM_H_INCLUDED
 
-#include <stdlib.h>
-
 template<typename T>
 class SortAlgorithm
 {
@@ -232,11 +230,6 @@ inline T* SortAlgorithm<T>::merge(T arr1[], T arr2[], int length1, int length2, 
 	}
 	delete[] arr1;
 	delete[] arr2;
-	//std::cout << "Merge: ";
-	//for (int i = 0; i < length1 + length2; i++) {
-	//	std::cout << temp[i] << " ";
-	//}
-	//std::cout << "\n";
 	return temp;
 }
 
@@ -319,7 +312,6 @@ inline T* SortAlgorithm<T>::mergeSortRecursive2(T arr[], T reg[], int a, int b, 
 	int mid = a + length / 2 - 1;
 	T *temp1 = divide(arr, length, length / 2, true);
 	T *temp2 = divide(arr, length, length / 2, false);
-	//std::cout << a << " " << b << " " << length / 2 - 1 << " " << mid - a<< "\n";
 	temp1 = mergeSortRecursive2(temp1, reg, a, mid, order);
 	temp2 = mergeSortRecursive2(temp2, reg, mid + 1, b, order);
 	T *merge1 = merge(temp1, temp2, length / 2, length - length / 2, order);

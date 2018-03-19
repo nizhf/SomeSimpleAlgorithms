@@ -366,7 +366,7 @@ void showGraphMatrix() {
     do {
         exit = false;
         int operation;
-        cout << "\nGraph Matrix menu \n 1. Create Graph \n 2. Add Vertice \n 3. Delete Vertice \n 4. Add Edge \n 5. Delete Edge \n Other. Quit\n";
+        cout << "\nGraph Matrix menu \n 1. Create Graph \n 2. Add Vertex \n 3. Delete Vertex \n 4. Add Edge \n 5. Delete Edge \n Other. Quit\n";
         cin >> operation;
         if (!graphCreated && operation > 1 && operation < 6) {
             cout << "You must first create a graph! \n";
@@ -397,22 +397,22 @@ void showGraphMatrix() {
             break;
 
         case 2:
-            cout << "Add Vertice:\n";
-            g->addVertice();
+            cout << "Add Vertex:\n";
+            g->addVertex();
             printGraphMatrix(g);
             break;
 
         case 3:
-            cout << "Delete Vertice: ";
+            cout << "Delete Vertex: ";
             int deleteV;
             cin >> deleteV;
-            g->deleteVertice(deleteV);
+            g->deleteVertex(deleteV);
             printGraphMatrix(g);
             break;
         case 4:
-            cout << "Add Edge: \nFirst Vertice: ";
+            cout << "Add Edge: \nFirst Vertex: ";
             cin >> v1;
-            cout << "Second Vertice: ";
+            cout << "Second Vertex: ";
             cin >> v2;
             cout << "Range: ";
             cin >> range;
@@ -420,9 +420,9 @@ void showGraphMatrix() {
             printGraphMatrix(g);
             break;
         case 5:
-            cout << "Delete Edge: \nFirst Vertice: ";
+            cout << "Delete Edge: \nFirst Vertex: ";
             cin >> v1;
-            cout << "Second Vertice: ";
+            cout << "Second Vertex: ";
             cin >> v2;
             g->deleteEdge(v1, v2);
             printGraphMatrix(g);
@@ -438,8 +438,8 @@ void showGraphMatrix() {
 
 void printGraphMatrix(GraphMatrix *g) {
     cout << "\nMatrix: \n";
-    for (int i = 0; i < g->getTotalVertice(); i++) {
-        for (int j = 0; j < g->getTotalVertice(); j++) {
+    for (int i = 0; i < g->getTotalVertex(); i++) {
+        for (int j = 0; j < g->getTotalVertex(); j++) {
             cout << " " << g->getEdge(i, j) << " ";
         }
         cout << "\n";
@@ -455,9 +455,9 @@ void showGraphList() {
     do {
         exit = false;
         int operation;
-        cout << "\nGraph List menu \n 1. Create Graph \n 2. Add Vertice \n 3. Delete Vertice \n 4. Add Edge \n 5. Delete Edge \n Other. Quit\n";
+        cout << "\nGraph List menu \n 1. Create Graph \n 2. Add Vertex \n 3. Delete Vertex \n 4. Add Edge \n 5. Delete Edge \n 6. Test for Connected \n 7. Find Shortest Path \n Other. Quit\n";
         cin >> operation;
-        if (!graphCreated && operation > 1 && operation < 6) {
+        if (!graphCreated && operation > 1 && operation < 8) {
             cout << "You must first create a graph! \n";
             operation = 1;
         }
@@ -486,22 +486,22 @@ void showGraphList() {
             graphCreated = true;
             break;
         case 2:
-            cout << "Add Vertice:\n";
-            g->addVertice();
+            cout << "Add Vertex:\n";
+            g->addVertex();
             printGraphList(g);
             break;
         case 3:
-            cout << "Delete Vertice: ";
+            cout << "Delete Vertex: ";
             int deleteV;
             cin >> deleteV;
-            if (!g->deleteVertice(deleteV))
+            if (!g->deleteVertex(deleteV))
                 cout << "invalid position! \n";
             printGraphList(g);
             break;
         case 4:
-            cout << "Add Edge: \nFirst Vertice: ";
+            cout << "Add Edge: \nFirst Vertex: ";
             cin >> v1;
-            cout << "Second Vertice: ";
+            cout << "Second Vertex: ";
             cin >> v2;
             cout << "Range: ";
             cin >> range;
@@ -510,13 +510,38 @@ void showGraphList() {
             printGraphList(g);
             break;
         case 5:
-            cout << "Delete Edge: \nFirst Vertice: ";
+            cout << "Delete Edge: \nFirst Vertex: ";
             cin >> v1;
-            cout << "Second Vertice: ";
+            cout << "Second Vertex: ";
             cin >> v2;
             if (!g->deleteEdge(v1, v2))
                 cout << "invalid position! \n";
             printGraphList(g);
+            break;
+        case 6:
+            bool connected;
+            connected = g->isConnected();
+            cout << "This Graph is " << (connected ? "connected" : "not connected") << "." << endl;
+            break;
+        case 7:
+            cout << "Find Shortest Path" << endl << "First Vertex: ";
+            cin >> v1;
+            cout << "Second Vertex: ";
+            cin >> v2;
+            try {
+                auto path = g->dijkstra(v1, v2);
+                if (path.size() == 0)
+                    cout << "No path found between " << v1 << " and " << v2 <<endl;
+                else {
+                    cout << path.keyAt(0);
+                    for (int i = 1; i < path.size(); i++)
+                        cout << "-->" << path.keyAt(i);
+                    cout << ", Total Distance: " << path.back() << endl;
+                }
+            }
+            catch (const char *e) {
+                cout << e << endl;
+            }
             break;
         default:
             exit = true;
@@ -529,12 +554,12 @@ void showGraphList() {
 
 void printGraphList(GraphList *g) {
     cout << "\nList: \n";
-    for (int i = 0; i < g->getTotalVertice(); i++) {
-        cout << g->getVerticeNumberAt(i) << ": ";
-        for (int j = 0; j < g->getTotalVertice(); j++) {
-            int range = g->getEdge(g->getVerticeNumberAt(i), g->getVerticeNumberAt(j));
+    for (int i = 0; i < g->getTotalVertex(); i++) {
+        cout << g->getVertexNumberAt(i) << ": ";
+        for (int j = 0; j < g->getTotalVertex(); j++) {
+            int range = g->getEdge(g->getVertexNumberAt(i), g->getVertexNumberAt(j));
             if (range > 0)
-                cout << " " << g->getVerticeNumberAt(j) << "-" << range << " ";
+                cout << " " << g->getVertexNumberAt(j) << "-" << range << " ";
         }
         cout << "\n";
     }

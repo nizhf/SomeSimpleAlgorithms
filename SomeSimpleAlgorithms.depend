@@ -2,12 +2,12 @@
 1521110713 source:e:\workspace\codeblocks\somesimplealgorithms\graph.cpp
 	"Graph.h"
 
-1521176952 e:\workspace\codeblocks\somesimplealgorithms\graph.h
+1521431982 e:\workspace\codeblocks\somesimplealgorithms\graph.h
 	<time.h>
 	<stdlib.h>
 	"MyList.h"
 
-1521181418 source:e:\workspace\codeblocks\somesimplealgorithms\main.cpp
+1521465729 source:e:\workspace\codeblocks\somesimplealgorithms\main.cpp
 	<iostream>
 	"SortAlgorithm.h"
 	"GraphMatrix.h"
@@ -17,20 +17,22 @@
 	<Windows.h>
 	<stdlib.h>
 
-1520913997 e:\workspace\codeblocks\somesimplealgorithms\sortalgorithm.h
-	<stdlib.h>
+1521464586 e:\workspace\codeblocks\somesimplealgorithms\sortalgorithm.h
 
-1521179902 e:\workspace\codeblocks\somesimplealgorithms\mylist.h
-	<stdlib.h>
+1521464383 e:\workspace\codeblocks\somesimplealgorithms\mylist.h
+	"Element.h"
 
-1521176915 e:\workspace\codeblocks\somesimplealgorithms\graphmatrix.h
-	<stdlib.h>
-	<time.h>
+1521464558 e:\workspace\codeblocks\somesimplealgorithms\graphmatrix.h
 	"Graph.h"
 
-1521197053 e:\workspace\codeblocks\somesimplealgorithms\graphlist.h
-	<stdlib.h>
-	<time.h>
+1521466037 e:\workspace\codeblocks\somesimplealgorithms\graphlist.h
+	<limits.h>
 	"MyList.h"
 	"Graph.h"
+	"MyPriorityQueue.h"
+
+1521391732 e:\workspace\codeblocks\somesimplealgorithms\element.h
+
+1521464299 e:\workspace\codeblocks\somesimplealgorithms\mypriorityqueue.h
+	"MyList.h"
 

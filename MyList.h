@@ -1,22 +1,7 @@
 #ifndef MYLIST_H_INCLUDED
 #define MYLIST_H_INCLUDED
 
-#include <stdlib.h>
-
-template<typename T>
-class Element {
-public:
-    Element(T data, int key = 0);
-    int key;
-    T data;
-    Element *previous, *next;
-};
-
-template<typename T>
-inline Element<T>::Element(T data, int key) : key(key), data(data) {
-    previous = NULL;
-    next = NULL;
-}
+#include "Element.h"
 
 template<typename T>
 class MyList
@@ -28,10 +13,10 @@ public:
     void initialize();
 
     //all index begins with 0!
-    T at(int position);
-    int keyAt(int position);
-    T back(); //return the last Element
-    T front(); //return the first Element
+    T at(int position) const;
+    int keyAt(int position) const;
+    T back() const; //return the last Element
+    T front() const; //return the first Element
     T popBack(); //return the last Element and delete it
     T popFront(); //return the first Element and delete it
 
@@ -43,25 +28,36 @@ public:
     bool removeKey(int key); //remove all Elements with key
     bool removeData(T data); //remove all Elements with data
 
-    int size(); //return the length of the List
+    int size() const; //return the length of the List
 
-    void sort(bool sequence = true);
+    void sort(bool sequence = true); //true: increased; false: decreased
+    void sortKey(bool sequence = true);
     void sortSelection(bool sequence = true);
 
     bool swap(int i1, int i2); //swap data and keys with index i1 and i2
     bool swapElement(int i1, int i2); //swap Elements with index i1 and i2
     bool swapIgnoreKey(int i1, int i2); //only swap data, not the key
-    T search(int key); //return the first data with key
-    T* searchAll(int key); //return all data with key
-    int searchCount(int key); //return the count of data with key
+    T search(int key) const; //return the first data with key
+    T* searchAll(int key) const; //return all data with key
+    int searchCount(int key) const; //return the count of data with key
+
+    bool changeKeyAt(int index, int key);
+    bool changeKeyWithData(T data, int key);
+    bool changeKey(int keyPrevious, int key);
+
+    template<typename U> friend std::ostream& operator<<(std::ostream &os, const MyList<U> &l);
 
 
 private:
+    struct ElementSort {
+        int key;
+        T data;
+    };
     Element<T> *first; //first Element with index 0
     Element<T> *last; //last Element with index length - 1, the newest inserted Element
     int length;
 
-    void quickSort(T arr[], int a, int b, bool order);
+    void quickSort(struct ElementSort arr[], int a, int b, bool dataOrKey, bool order); //data - true, key - false;
 
 };
 
@@ -96,7 +92,7 @@ inline void MyList<T>::initialize() {
 }
 
 template<typename T>
-inline T MyList<T>::at(int position) {
+inline T MyList<T>::at(int position) const {
     if (length == 0 || position >= length)
         throw "invalid index!";
     if (position == 0)
@@ -111,7 +107,7 @@ inline T MyList<T>::at(int position) {
 }
 
 template<typename T>
-inline int MyList<T>::keyAt(int position) {
+inline int MyList<T>::keyAt(int position) const {
     if (length == 0 || position >= length)
         throw "invalid index!";
     if (position == 0)
@@ -126,7 +122,7 @@ inline int MyList<T>::keyAt(int position) {
 }
 
 template<typename T>
-inline T MyList<T>::back() {
+inline T MyList<T>::back() const {
     if (length == 0)
         throw "List is empty!";
     else
@@ -134,7 +130,7 @@ inline T MyList<T>::back() {
 }
 
 template<typename T>
-inline T MyList<T>::front() {
+inline T MyList<T>::front() const {
     if (length == 0)
         throw "List is empty!";
     else
@@ -298,66 +294,121 @@ inline bool MyList<T>::removeData(T data) {
 }
 
 template<typename T>
-inline int MyList<T>::size() {
+inline int MyList<T>::size() const {
     return length;
 }
 
 template<typename T>
 inline void MyList<T>::sort(bool sequence) {
-    T *arr = new T[length];
+    struct ElementSort arr[length];
     Element<T> *temp = first;
     for (int i = 0; i < length; i++) {
-        arr[i] = temp->data;
+        arr[i] = {temp->key, temp->data};
         temp = temp->next;
     }
-    quickSort(arr, 0, length - 1, sequence);
+    quickSort(arr, 0, length - 1, true, sequence);
     temp = first;
     for (int i = 0; i < length; i++) {
-        temp->data = arr[i];
+        temp->key = arr[i].key;
+        temp->data = arr[i].data;
         temp = temp->next;
     }
-    delete[] arr;
+
 }
 
 template<typename T>
-inline void MyList<T>::quickSort(T arr[], int a, int b, bool order) {
+inline void MyList<T>::sortKey(bool sequence) {
+    struct ElementSort arr[length];
+    Element<T> *temp = first;
+    for (int i = 0; i < length; i++) {
+        arr[i] = {temp->key, temp->data};
+        temp = temp->next;
+    }
+    quickSort(arr, 0, length - 1, false, sequence);
+    temp = first;
+    for (int i = 0; i < length; i++) {
+        temp->key = arr[i].key;
+        temp->data = arr[i].data;
+        temp = temp->next;
+    }
+}
+
+template<typename T>
+inline void MyList<T>::quickSort(struct ElementSort arr[], int a, int b, bool dataOrKey, bool order) {
     if (a >= b) return;
 
-	T key = arr[(a + b) / 2];
-	int i = a, j = b;
-	if (order) {
-		while (i < j) {
-			while (arr[i] < key)
-				i++;
-			while (arr[j] > key)
-				j--;
-			if (i <= j) {
-                T temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
-				i++;
-				j--;
-			}
-		}
-	}
-	else {
-		while (i < j) {
-			while (arr[i] > key)
-				i++;
-			while (arr[j] < key)
-				j--;
-			if (i <= j) {
-				T temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
-				i++;
-				j--;
-			}
-		}
-	}
+    int i = a, j = b;
 
-	quickSort(arr, a, j, order);
-	quickSort(arr, i, b, order);
+    if (dataOrKey) {
+        T key = arr[(a + b) / 2].data;
+
+        if (order) {
+            while (i < j) {
+                while (arr[i].data < key)
+                    i++;
+                while (arr[j].data > key)
+                    j--;
+                if (i <= j) {
+                    struct ElementSort temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                    i++;
+                    j--;
+                }
+            }
+        }
+        else {
+            while (i < j) {
+                while (arr[i].data > key)
+                    i++;
+                while (arr[j].data < key)
+                    j--;
+                if (i <= j) {
+                    struct ElementSort temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                    i++;
+                    j--;
+                }
+            }
+        }
+    }
+    else {
+        int key = arr[(a + b) / 2].key;
+        if (order) {
+            while (i < j) {
+                while (arr[i].key < key)
+                    i++;
+                while (arr[j].key > key)
+                    j--;
+                if (i <= j) {
+                    struct ElementSort temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                    i++;
+                    j--;
+                }
+            }
+        }
+        else {
+            while (i < j) {
+                while (arr[i].key > key)
+                    i++;
+                while (arr[j].key < key)
+                    j--;
+                if (i <= j) {
+                    struct ElementSort temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                    i++;
+                    j--;
+                }
+            }
+        }
+    }
+    quickSort(arr, a, j, dataOrKey, order);
+    quickSort(arr, i, b, dataOrKey, order);
+
 }
 
 template<typename T>
@@ -468,7 +519,7 @@ inline bool MyList<T>::swapIgnoreKey(int i1, int i2) {
 }
 
 template<typename T>
-inline T MyList<T>::search(int key) {
+inline T MyList<T>::search(int key) const {
     Element<T> *temp = first;
     while(temp != NULL) {
         if (temp->key == key)
@@ -479,7 +530,7 @@ inline T MyList<T>::search(int key) {
 }
 
 template<typename T>
-inline T* MyList<T>::searchAll(int key) {
+inline T* MyList<T>::searchAll(int key) const {
     T tempResult[length];
     int index = 0;
     Element<T> *temp = first;
@@ -499,7 +550,7 @@ inline T* MyList<T>::searchAll(int key) {
 }
 
 template<typename T>
-inline int MyList<T>::searchCount(int key) {
+inline int MyList<T>::searchCount(int key) const {
     int count = 0;
     Element<T> *temp = first;
     while(temp != NULL) {
@@ -508,6 +559,56 @@ inline int MyList<T>::searchCount(int key) {
         temp = temp->next;
     }
     return count;
+}
+
+template<typename T>
+inline bool MyList<T>::changeKeyAt(int index, int key) {
+    if (index < 0 || index >= length)
+        return false;
+    Element<T> *temp = first;
+    for (int i = 0; i < index; i++) {
+        temp = temp->next;
+    }
+    temp->key = key;
+    return true;
+}
+
+template<typename T>
+inline bool MyList<T>::changeKeyWithData(T data, int key) {
+    bool found = false;
+    Element<T> *temp = first;
+    while (temp != NULL) {
+        if (temp->data == data) {
+            temp->key = key;
+            found = true;
+        }
+        temp = temp->next;
+    }
+    return found;
+}
+
+template<typename T>
+inline bool MyList<T>::changeKey(int keyPrevious, int key) {
+    bool found = false;
+    Element<T> *temp = first;
+    while (temp != NULL) {
+        if (temp->key == keyPrevious) {
+            temp->key = key;
+            found = true;
+        }
+        temp = temp->next;
+    }
+    return found;
+}
+
+template<typename U>
+std::ostream& operator<<(std::ostream &os, const MyList<U> &l) {
+    os << std::endl << l.size() << " Elements: ";
+    for (int i = 0; i < l.size(); i++) {
+        os << l.keyAt(i) << "-" << l.at(i) << " ";
+    }
+    os << std::endl;
+    return os;
 }
 
 
