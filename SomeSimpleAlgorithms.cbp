@@ -32,14 +32,14 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="Element.h" />
-		<Unit filename="Graph.h" />
-		<Unit filename="GraphList.h" />
-		<Unit filename="GraphMatrix.h" />
-		<Unit filename="MyList.h" />
-		<Unit filename="MyPriorityQueue.h" />
-		<Unit filename="MyQueue.h" />
-		<Unit filename="SortAlgorithm.h" />
+		<Unit filename="Graph/Graph.h" />
+		<Unit filename="Graph/GraphList.h" />
+		<Unit filename="Graph/GraphMatrix.h" />
+		<Unit filename="List/Element.h" />
+		<Unit filename="List/MyList.h" />
+		<Unit filename="List/MyPriorityQueueList.h" />
+		<Unit filename="List/MyQueue.h" />
+		<Unit filename="Sort/SortAlgorithm.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

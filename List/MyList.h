@@ -71,7 +71,7 @@ inline MyList<T>::MyList() {
 template<typename T>
 inline MyList<T>::~MyList() {
     Element<T> *temp = first;
-    while (first != NULL) {
+    while (temp != NULL) {
         first = first->next;
         delete temp;
         temp = first;

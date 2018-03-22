@@ -1,11 +1,12 @@
 #include <iostream>
-#include "SortAlgorithm.h"
-#include "GraphMatrix.h"
-#include "GraphList.h"
-#include "MyList.h"
 #include <time.h>
 #include <Windows.h>
 #include <stdlib.h>
+
+#include "Sort/SortAlgorithm.h"
+#include "Graph/GraphMatrix.h"
+#include "Graph/GraphList.h"
+#include "List/MyList.h"
 
 using namespace std;
 
@@ -451,14 +452,17 @@ void showGraphList() {
     bool graphCreated = false;
     bool exit = false;
     GraphList *g = NULL;
+    MyList<int> *path = NULL;
+    GraphList *mst = NULL;
     int v1, v2, range;
     do {
         exit = false;
         int operation;
-        cout << "\nGraph List menu \n 1. Create Graph \n 2. Add Vertex \n 3. Delete Vertex \n 4. Add Edge \n 5. Delete Edge \n 6. Graph Properties \n 7. Find Shortest Path \n Other. Quit\n";
+        cout << endl << "Graph List menu \n 1. Create Graph \n 2. Add Vertex \n 3. Delete Vertex \n 4. Add Edge \n 5. Delete Edge \n 6. Graph Properties \n 7. Find Shortest Path" << endl;
+        cout << " 8. Find Minimum Spanning Tree \n Other. Quit" << endl;
         cin >> operation;
-        if (!graphCreated && operation > 1 && operation < 8) {
-            cout << "You must first create a graph! \n";
+        if (!graphCreated && operation > 1 && operation < 9) {
+            cout << "You must first create a graph!" << endl;
             operation = 1;
         }
         switch (operation) {
@@ -466,8 +470,11 @@ void showGraphList() {
             cout << "Graph size: ";
             int gsize;
             cin >> gsize;
+            cout << "Directed? (y/n) ";
+            char directed;
+            cin >> directed;
             delete g;
-            g = new GraphList(gsize);
+            g = new GraphList(gsize, (directed == 'y' ? true : false));
 
             char random;
             cout << "Random generate edges? (y/n): ";
@@ -486,7 +493,7 @@ void showGraphList() {
             graphCreated = true;
             break;
         case 2:
-            cout << "Add Vertex:\n";
+            cout << "Add Vertex:" << endl;
             g->addVertex();
             printGraphList(g);
             break;
@@ -495,7 +502,7 @@ void showGraphList() {
             int deleteV;
             cin >> deleteV;
             if (!g->deleteVertex(deleteV))
-                cout << "invalid position! \n";
+                cout << "invalid position!" << endl;
             printGraphList(g);
             break;
         case 4:
@@ -506,7 +513,7 @@ void showGraphList() {
             cout << "Range: ";
             cin >> range;
             if (!g->addEdge(v1, v2, range))
-                cout << "invalid position! \n";
+                cout << "invalid position!" << endl;
             printGraphList(g);
             break;
         case 5:
@@ -515,7 +522,7 @@ void showGraphList() {
             cout << "Second Vertex: ";
             cin >> v2;
             if (!g->deleteEdge(v1, v2))
-                cout << "invalid position! \n";
+                cout << "invalid position!" << endl;
             printGraphList(g);
             break;
         case 6:
@@ -528,20 +535,22 @@ void showGraphList() {
             cin >> v1;
             cout << "Second Vertex: ";
             cin >> v2;
-            try {
-                auto path = g->dijkstra(v1, v2);
-                if (path.size() == 0)
-                    cout << "No path found between " << v1 << " and " << v2 <<endl;
-                else {
-                    cout << path.keyAt(0);
-                    for (int i = 1; i < path.size(); i++)
-                        cout << "-->" << path.keyAt(i);
-                    cout << ", Total Distance: " << path.back() << endl;
-                }
+            path = g->dijkstra(v1, v2);
+            if (NULL == path)
+                cout << "Invalid position!" << endl;
+            else if (path->size() == 0)
+                cout << "No path found between " << v1 << " and " << v2 <<endl;
+            else {
+                cout << path->keyAt(0);
+                for (int i = 1; i < path->size(); i++)
+                    cout << "-->" << path->keyAt(i);
+                cout << ", Total Distance: " << path->back() << endl;
             }
-            catch (const char *e) {
-                cout << e << endl;
-            }
+            break;
+        case 8:
+            cout << "Minimum Spanning Tree";
+            mst = g->prim();
+            printGraphList(mst);
             break;
         default:
             exit = true;
@@ -550,6 +559,8 @@ void showGraphList() {
     }
     while (!exit);
     delete g;
+    delete mst;
+    delete path;
 }
 
 void printGraphList(GraphList *g) {
@@ -561,7 +572,7 @@ void printGraphList(GraphList *g) {
             if (range > 0)
                 cout << " " << g->getVertexNumberAt(j) << "-" << range << " ";
         }
-        cout << "\n";
+        cout << endl;
     }
 }
 

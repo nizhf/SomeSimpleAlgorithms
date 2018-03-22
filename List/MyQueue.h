@@ -5,6 +5,7 @@ template<typename T>
 class MyQueue {
 public:
     MyQueue(); //First In First Out
+    ~MyQueue();
     void clear();
 
     bool enqueue(T data);
@@ -29,6 +30,11 @@ inline MyQueue<T>::MyQueue() {
     end = 0;
     maxLength = 16;
     queue = new T[maxLength];
+}
+
+template<typename T>
+inline MyQueue<T>::~MyQueue() {
+    delete queue;
 }
 
 template<typename T>

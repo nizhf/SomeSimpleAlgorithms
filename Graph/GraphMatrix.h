@@ -18,11 +18,11 @@ public:
     bool addEdge(int v1, int v2, int range = 1);
     bool deleteEdge(int v1, int v2);
 
-    int getEdge(int v1, int v2);
-    int getEdgeCount(int v);
+    int getEdge(int v1, int v2) const;
+    int getEdgeCount(int v) const;
 
-    int getTotalVertex();
-    int getTotalEdge();
+    int getTotalVertex() const;
+    int getTotalEdge() const;
 
 private:
     int v; //number of vertices
@@ -125,12 +125,12 @@ inline bool GraphMatrix::deleteEdge(int v1, int v2) {
     return true;
 }
 
-inline int GraphMatrix::getEdge(int v1, int v2) {
+inline int GraphMatrix::getEdge(int v1, int v2) const {
     if (v1 >= v || v2 >= v || v1 < 0 || v2 < 0) return -1;
     return matrix[v1][v2];
 }
 
-inline int GraphMatrix::getEdgeCount(int v) {
+inline int GraphMatrix::getEdgeCount(int v) const {
     if (v >= this->v || v < 0) return -1;
     int count = 0;
     for (int i = 0; i < this->v; i++) {
@@ -140,11 +140,11 @@ inline int GraphMatrix::getEdgeCount(int v) {
     return count;
 }
 
-inline int GraphMatrix::getTotalVertex() {
+inline int GraphMatrix::getTotalVertex() const {
     return v;
 }
 
-inline int GraphMatrix::getTotalEdge() {
+inline int GraphMatrix::getTotalEdge() const {
     return e;
 }
 

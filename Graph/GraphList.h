@@ -2,9 +2,9 @@
 #define GRAPHLIST_H_INCLUDED
 
 #include <limits.h>
-#include "MyList.h"
+#include "../List/MyList.h"
 #include "Graph.h"
-#include "MyPriorityQueue.h"
+#include "../List/MyPriorityQueueList.h"
 
 
 class GraphList : public Graph
@@ -22,13 +22,13 @@ public:
     bool addEdge(int v1, int v2, int range = 1);
     bool deleteEdge(int v1, int v2);
 
-    int getEdge(int v1, int v2);
-    int getEdgeCount(int v);
+    int getEdge(int v1, int v2) const;
+    int getEdgeCount(int v) const;
 
-    int getTotalVertex();
-    int getTotalEdge();
+    int getTotalVertex() const;
+    int getTotalEdge() const;
 
-    int getVertexNumberAt(int index);
+    int getVertexNumberAt(int index) const;
 
     void initializeNode();
     bool isConnected();
@@ -37,7 +37,8 @@ public:
 
     bool DFS(int v); //true - meet a visited vertex; false - not
 
-    MyList<int> dijkstra(int v1, int v2);
+    MyList<int>* dijkstra(int v1, int v2);
+    GraphList* prim();
 
 
 private:
@@ -46,6 +47,12 @@ private:
         bool visited;
         int accDistance;
         int prev;
+        bool primAdded;
+    };
+    struct Edge {
+        int from;
+        int to;
+        int distance;
     };
     int vNumber;
     MyList<MyList<int> *> *edgeList;
@@ -56,7 +63,7 @@ private:
 };
 
 inline GraphList::GraphList(int v, bool directed) : directed(directed) {
-    int vMax = v >= 1? v : 10;
+    int vMax = v > 0? v : 0;
     vNumber = 0;
     nodeList = new MyList<Node *>;
     edgeList = new MyList<MyList<int> *>;
@@ -101,7 +108,7 @@ inline bool GraphList::generateRandomEdges(int maxRange, int rate) {
 }
 
 inline bool GraphList::addVertex() {
-    Node *newNode = new Node{vNumber, false, INT_MAX, -1};
+    Node *newNode = new Node{vNumber, false, INT_MAX, -1, false};
     nodeList->pushBack(newNode, vNumber);
     MyList<int> *newList = new MyList<int>;
     edgeList->pushBack(newList, vNumber);
@@ -175,7 +182,7 @@ inline bool GraphList::deleteEdge(int v1, int v2) {
     }
 }
 
-inline int GraphList::getEdge(int v1, int v2) {
+inline int GraphList::getEdge(int v1, int v2) const {
     bool found1 = false;
     bool found2 = false;
     for (int i = 0; i < getTotalVertex(); i++) {
@@ -197,7 +204,7 @@ inline int GraphList::getEdge(int v1, int v2) {
     }
 }
 
-inline int GraphList::getEdgeCount(int v) {
+inline int GraphList::getEdgeCount(int v) const {
     bool found = false;
     for (int i = 0; i < getTotalVertex(); i++) {
         if (nodeList->keyAt(i) == v) {
@@ -211,11 +218,11 @@ inline int GraphList::getEdgeCount(int v) {
     return edgeList->search(v)->size();
 }
 
-inline int GraphList::getTotalVertex() {
+inline int GraphList::getTotalVertex() const {
     return nodeList->size();
 }
 
-inline int GraphList::getTotalEdge() {
+inline int GraphList::getTotalEdge() const {
     int e = 0;
     for (int i = 0; i < edgeList->size(); i++) {
         e += edgeList->at(i)->size();
@@ -226,7 +233,7 @@ inline int GraphList::getTotalEdge() {
         return e / 2;
 }
 
-inline int GraphList::getVertexNumberAt(int index) {
+inline int GraphList::getVertexNumberAt(int index) const {
     if (index < 0 || index >= getTotalVertex())
         return -1;
     return nodeList->keyAt(index);
@@ -237,6 +244,7 @@ inline void GraphList::initializeNode() {
         nodeList->at(i)->visited = false;
         nodeList->at(i)->accDistance = INT_MAX;
         nodeList->at(i)->prev = -1;
+        nodeList->at(i)->primAdded = false;
     }
 }
 
@@ -277,7 +285,7 @@ inline bool GraphList::DFS(int v) {
     return meet;
 }
 
-inline MyList<int> GraphList::dijkstra(int v1, int v2) {
+inline MyList<int>* GraphList::dijkstra(int v1, int v2) {
     bool found1 = false;
     bool found2 = false;
     for (int i = 0; i < getTotalVertex(); i++) {
@@ -289,11 +297,11 @@ inline MyList<int> GraphList::dijkstra(int v1, int v2) {
             break;
     }
     if (!found1 || !found2)
-        throw "Vertex not found";
+        return NULL;
 
     initializeNode();
     nodeList->search(v1)->accDistance = 0;
-    MyPriorityQueue<int> pq;
+    MyPriorityQueueList<int> pq;
 
     for (int i = 0; i < getTotalVertex(); i++)
         pq.insert(getVertexNumberAt(i), nodeList->at(i)->accDistance);
@@ -315,16 +323,65 @@ inline MyList<int> GraphList::dijkstra(int v1, int v2) {
         }
     }
 
-    MyList<int> path;
+    MyList<int> *path = new MyList<int>;
     int vCurrent = v2;
     while (vCurrent != -1) {
         if (nodeList->search(vCurrent)->accDistance != INT_MAX)
-            path.pushFront(nodeList->search(vCurrent)->accDistance, vCurrent);
+            path->pushFront(nodeList->search(vCurrent)->accDistance, vCurrent);
         vCurrent = nodeList->search(vCurrent)->prev;
     }
     return path;
 }
 
+inline GraphList* GraphList::prim() {
+    GraphList *mst = new GraphList(0, directed);
+
+    for (int i = 0, ii = 0; i < vNumber; i++) {
+        mst->addVertex();
+        if (mst->getVertexNumberAt(ii) == getVertexNumberAt(ii))
+            ii++;
+        else
+            mst->deleteVertex(i);
+    }
+
+    if (!isConnected())
+        return mst;
+
+    initializeNode();
+    nodeList->at(0)->accDistance = 0;
+    MyPriorityQueueList<int> pq;
+    for (int i = 0; i < getTotalVertex(); i++)
+        pq.insert(getVertexNumberAt(i), nodeList->at(i)->accDistance);
+
+    for (int i = 0; i < getTotalVertex(); i++) {
+        int vCurrent = pq.extractMin();
+        nodeList->search(vCurrent)->visited = true;
+        int dCurrent = nodeList->search(vCurrent)->accDistance;
+        if (dCurrent == INT_MAX)
+            break;
+        for (int j = 0; j < getEdgeCount(vCurrent); j++) {
+            int vNext = edgeList->search(vCurrent)->keyAt(j);
+            if (nodeList->search(vNext)->visited)
+                continue;
+            int newDistance = getEdge(vCurrent, vNext);
+            if (newDistance < nodeList->search(vNext)->accDistance) {
+                nodeList->search(vNext)->accDistance = newDistance;
+                nodeList->search(vNext)->prev = vCurrent;
+                pq.changeKeyWithData(vNext, newDistance);
+                pq.sortKey();
+            }
+        }
+    }
+
+    for (int i = 0; i < getTotalVertex(); i++) {
+        int vCurrent = nodeList->at(i)->number;
+        int vPrev = nodeList->at(i)->prev;
+        if (vPrev != -1)
+            mst->addEdge(vPrev, vCurrent, getEdge(vPrev, vCurrent));
+    }
+    return mst;
+
+}
 
 
 #endif // GRAPHLIST_H_INCLUDED

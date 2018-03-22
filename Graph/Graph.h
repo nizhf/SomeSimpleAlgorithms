@@ -3,7 +3,6 @@
 
 #include <time.h>
 #include <stdlib.h>
-#include "MyList.h"
 
 class Graph
 {
@@ -19,11 +18,11 @@ public:
     virtual bool addEdge(int v1, int v2, int range = 1) = 0;
     virtual bool deleteEdge(int v1, int v2) = 0;
 
-    virtual int getEdge(int v1, int v2) = 0;
-    virtual int getEdgeCount(int v) = 0;
+    virtual int getEdge(int v1, int v2) const = 0;
+    virtual int getEdgeCount(int v) const = 0;
 
-    virtual int getTotalVertex() = 0;
-    virtual int getTotalEdge() = 0;
+    virtual int getTotalVertex() const = 0;
+    virtual int getTotalEdge() const = 0;
 
 private:
 };
