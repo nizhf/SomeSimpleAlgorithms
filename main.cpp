@@ -7,6 +7,8 @@
 #include "Graph/GraphMatrix.h"
 #include "Graph/GraphList.h"
 #include "List/MyList.h"
+#include "Tree/Heap.h"
+#include "Tree/AVLTree.h"
 
 using namespace std;
 
@@ -16,12 +18,14 @@ void showGraphMatrix();
 void printGraphMatrix(GraphMatrix *g);
 void showGraphList();
 void printGraphList(GraphList *g);
+void showMinHeap();
+void showAVLTree();
 
 int main()
 {
     bool exit = false;
     do {
-        cout << "\nMain Menu\n1. Sort algorithm\n2. List\n3. Graph Matrix\n4. Graph List\nOther. Exit\n";
+        cout << "\nMain Menu\n1. Sort algorithm\n2. List\n3. Graph Matrix\n4. Graph List\n5. Min Heap\n6. AVL Tree\nOther. Exit\n";
         int option;
         exit = false;
         cin >> option;
@@ -37,6 +41,12 @@ int main()
             break;
         case 4:
             showGraphList();
+            break;
+        case 5:
+            showMinHeap();
+            break;
+        case 6:
+            showAVLTree();
             break;
         default:
             exit = true;
@@ -140,6 +150,16 @@ void showSort() {
                 cout << arr7[i] << " ";
             }
 
+            int *arr8 = new int[length];
+            for (int i = 0; i < length; i++) {
+                arr8[i] = arr[i];
+            }
+            cout << endl << " Heap Sort:" << endl;
+            MinHeap<int, int>::heapSort(arr8, length);
+            for (int i = 0; i < length; i++) {
+                cout << arr8[i] << " ";
+            }
+
             delete[] arr;
             delete[] arr1;
             delete[] arr2;
@@ -148,6 +168,7 @@ void showSort() {
             delete[] arr5;
             delete[] arr6;
             delete[] arr7;
+            delete[] arr8;
         }
         else if (operation == 2) {
             cout << "Enter the count of random numbers: ";
@@ -241,10 +262,8 @@ void showSort() {
         }
         else exit = true;
     } while(!exit);
-
-
-
 }
+
 
 
 void showList() {
@@ -359,6 +378,7 @@ void showList() {
 }
 
 
+
 void showGraphMatrix() {
     bool graphCreated = false;
     bool exit = false;
@@ -448,16 +468,17 @@ void printGraphMatrix(GraphMatrix *g) {
 }
 
 
+
 void showGraphList() {
     bool graphCreated = false;
     bool exit = false;
     GraphList *g = NULL;
     MyList<int> *path = NULL;
     GraphList *mst = NULL;
-    int v1, v2, range;
     do {
         exit = false;
         int operation;
+        int v1, v2, range;
         cout << endl << "Graph List menu \n 1. Create Graph \n 2. Add Vertex \n 3. Delete Vertex \n 4. Add Edge \n 5. Delete Edge \n 6. Graph Properties \n 7. Find Shortest Path" << endl;
         cout << " 8. Find Minimum Spanning Tree \n Other. Quit" << endl;
         cin >> operation;
@@ -578,7 +599,174 @@ void printGraphList(GraphList *g) {
 
 
 
+void showMinHeap() {
+    bool heapCreated = false;
+    bool exit = false;
+    MinHeap<int, int> *mh = NULL;
+    int *arr = NULL;
+    do {
+        exit = false;
+        int operation, key, data;
+        cout << endl << "Min Heap Menu:" << endl << " 1. Create new Min Heap" << endl << " 2. Show" << endl << " 3. Insert" << endl << " 4. Extract Min" << endl << " 5. Heap Sort" << endl;
+        cout << "Other. Quit" << endl;
+        cin >> operation;
+        if (!heapCreated && operation > 1  && operation < 5) {
+            cout << "You must first create a new Min Heap!" << endl;
+            operation = 1;
+        }
+        switch (operation) {
+        case 1:
+            cout << "Count: ";
+            int count;
+            cin >> count;
+            cout << "Random? (y/n) ";
+            char random;
+            cin >> random;
+            delete mh;
+            mh = new MinHeap<int, int>;
+            if (random == 'y') {
+                for (int i = 0; i < count; i++) {
+                    int num = rand() % (count * 3);
+                    mh->insert(num, num);
+                }
+            }
+            else {
+                for (int i = 0; i < count; i++) {
+                    cout << i << ". key: ";
+                    cin >> key;
+                    cout << i << ". data: ";
+                    cin >> data;
+                    mh->insert(data, key);
+                }
+            }
+            heapCreated = true;
+            break;
+        case 2:
+            cout << "Min Heap size: " << mh->size() << ", depth: " << mh->depth() << endl;
+            mh->traverseLevel(mh->root(), [&](struct MinHeap<int, int>::Node *node){cout << node->key << "-" << node->data << " ";});
+            cout << endl;
+            break;
+        case 3:
+            cout << "Insert: " << endl;
+            cout << "Key: ";
+            cin >> key;
+            cout << "Data: ";
+            cin >> data;
+            mh->insert(data, key);
+            break;
+        case 4:
+            cout << "Extract Min: " << mh->extractMin() << endl;
+            break;
+        case 5:
+            cout << "Heap Sort: " << endl;
+            cout << "Count: ";
+            cin >> count;
+            cout << "Random?(y/n) ";
+            cin >> random;
+            arr = new int[count];
+            if (random == 'y') {
+                for (int i = 0; i < count; i++) {
+                    arr[i] = rand() % (count * 3);
+                }
+            }
+            else {
+                for (int i = 0; i < count; i++) {
+                    cout << i + 1 << ". number: ";
+                    cin >> arr[i];
+                }
+            }
+            cout << "Original array: ";
+            for (int i = 0; i < count; i++) {
+                cout << arr[i] << " ";
+            }
+            cout << endl;
+            arr = MinHeap<int, int>::heapSort(arr, count);
+            cout << endl << "Array after heap sort:" << endl;
+            for (int i = 0; i < count; i++) {
+                cout << arr[i] << " ";
+            }
+            cout << endl;
+            break;
+        default:
+            exit = true;
+            break;
+        }
+    }
+    while (!exit);
+    delete mh;
+    delete arr;
+}
 
+
+
+void showAVLTree() {
+    bool treeCreated = false;
+    bool exit = false;
+    AVLTree<string, int> avl;
+
+    do {
+        exit = false;
+        int operation, key;
+        string data;
+        cout << endl << "AVL Tree Menu:" << endl << " 1. Create new AVL Tree" << endl << " 2. Show" << endl << " 3. Insert" << endl << " 4. Remove" << endl << " 5. Search" << endl;
+        cout << "Other. Quit" << endl;
+        cin >> operation;
+        if (!treeCreated && operation > 1  && operation < 6) {
+            cout << "You must first create a new AVL Tree!" << endl;
+            operation = 1;
+        }
+        switch (operation) {
+        case 1:
+            cout << "Count: ";
+            int count;
+            cin >> count;
+            avl.initialize();
+            for (int i = 0; i < count; i++) {
+                cout << i << ". key: ";
+                cin >> key;
+                cout << i << ". data: ";
+                cin >> data;
+                avl.insert(data, key);
+            }
+            treeCreated = true;
+            break;
+        case 2:
+            cout << "AVL Tree size: " << avl.size() << ", depth: " << avl.depth() << endl;
+            avl.traverseLevel(avl.root(), [&](struct BinaryTree<string, int>::Node *node){cout << node->key << "-" << node->data << " ";});
+            cout << endl;
+            break;
+        case 3:
+            cout << "Insert: " << endl;
+            cout << "Key: ";
+            cin >> key;
+            cout << "Data: ";
+            cin >> data;
+            avl.insert(data, key);
+            break;
+        case 4:
+            cout << "Remove: " << endl;
+            cout << "Key: ";
+            cin >> key;
+            avl.removeKey(key);
+            break;
+        case 5:
+            cout << "Search: " << endl;
+            cout << "Key: ";
+            cin >> key;
+            try {
+                cout << avl.search(key) << endl;
+            }
+            catch (const char *err) {
+                cout << err << endl;
+            }
+            break;
+        default:
+            exit = true;
+            break;
+        }
+    }
+    while (!exit);
+}
 
 
 

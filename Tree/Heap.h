@@ -6,7 +6,7 @@
 template<typename T, typename K>
 class MinHeap : public BinaryTree<T, K> {
 public:
-    explicit MinHeap();
+    MinHeap();
     ~MinHeap();
 
     bool insert(T data, K key) override;

@@ -17,6 +17,8 @@ public:
     explicit BinaryTree(struct Node *node);
     virtual ~BinaryTree();
 
+    void initialize();
+
     bool isEmpty();
 
     struct Node* root();
@@ -29,6 +31,7 @@ public:
     virtual bool removeData(T data);
 
     int depth();
+    int depth(struct Node *node);
     int size();
 
     void traversePre(struct Node *node, std::function<void(struct Node *)> visit);
@@ -60,6 +63,12 @@ inline BinaryTree<T, K>::BinaryTree(struct Node *node) {
 template<typename T, typename K>
 inline BinaryTree<T, K>::~BinaryTree() {
     traversePost(_root, [&](struct Node *node){delete node;});
+}
+
+template<typename T, typename K>
+inline void BinaryTree<T, K>::initialize() {
+    traversePost(_root, [&](struct Node *node){delete node;});
+    _root = NULL;
 }
 
 template<typename T, typename K>
@@ -316,6 +325,11 @@ inline int BinaryTree<T, K>::size() {
 template<typename T, typename K>
 inline int BinaryTree<T, K>::depth() {
     return DFSDepth(_root);
+}
+
+template<typename T, typename K>
+inline int BinaryTree<T, K>::depth(struct Node *node) {
+    return DFSDepth(node);
 }
 
 template<typename T, typename K>

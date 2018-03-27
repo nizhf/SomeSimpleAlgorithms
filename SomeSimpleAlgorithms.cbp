@@ -40,6 +40,10 @@
 		<Unit filename="List/MyPriorityQueueList.h" />
 		<Unit filename="List/MyQueue.h" />
 		<Unit filename="Sort/SortAlgorithm.h" />
+		<Unit filename="Tree/AVLTree.h" />
+		<Unit filename="Tree/BinarySearchTree.h" />
+		<Unit filename="Tree/BinaryTree.h" />
+		<Unit filename="Tree/Heap.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
