@@ -13,6 +13,10 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include/Graph" />
+					<Add directory="include/List" />
+					<Add directory="include/Sort" />
+					<Add directory="include/Tree" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -22,6 +26,10 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include/Graph" />
+					<Add directory="include/List" />
+					<Add directory="include/Sort" />
+					<Add directory="include/Tree" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -32,19 +40,22 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="Graph/Graph.h" />
-		<Unit filename="Graph/GraphList.h" />
-		<Unit filename="Graph/GraphMatrix.h" />
-		<Unit filename="List/Element.h" />
-		<Unit filename="List/MyList.h" />
-		<Unit filename="List/MyPriorityQueueList.h" />
-		<Unit filename="List/MyQueue.h" />
-		<Unit filename="Sort/SortAlgorithm.h" />
-		<Unit filename="Tree/AVLTree.h" />
-		<Unit filename="Tree/BinarySearchTree.h" />
-		<Unit filename="Tree/BinaryTree.h" />
-		<Unit filename="Tree/Heap.h" />
+		<Unit filename="include/Graph/Graph.h" />
+		<Unit filename="include/Graph/GraphList.h" />
+		<Unit filename="include/Graph/GraphMatrix.h" />
+		<Unit filename="include/List/Element.h" />
+		<Unit filename="include/List/MyList.h" />
+		<Unit filename="include/List/MyPriorityQueueList.h" />
+		<Unit filename="include/List/MyQueue.h" />
+		<Unit filename="include/Sort/SortAlgorithm.h" />
+		<Unit filename="include/Tree/AVLTree.h" />
+		<Unit filename="include/Tree/BinarySearchTree.h" />
+		<Unit filename="include/Tree/BinaryTree.h" />
+		<Unit filename="include/Tree/MinHeap.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Graph/Graph.cpp" />
+		<Unit filename="src/Graph/GraphList.cpp" />
+		<Unit filename="src/Graph/GraphMatrix.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

@@ -1,8 +1,8 @@
-#ifndef GRAPH_H_INCLUDED
-#define GRAPH_H_INCLUDED
+#ifndef GRAPH_H
+#define GRAPH_H
 
-#include <time.h>
-#include <stdlib.h>
+#include <ctime>
+#include <cstdlib>
 
 class Graph
 {
@@ -23,13 +23,6 @@ public:
 
     virtual int getTotalVertex() const = 0;
     virtual int getTotalEdge() const = 0;
-
-private:
 };
 
-inline Graph::~Graph() {
-
-}
-
-#endif // GRAPH_H_INCLUDED
-
+#endif // GRAPH_H

@@ -20,8 +20,6 @@ public:
     T search(K key);
     T minimum();
     T maximum();
-
-
 };
 
 template<typename T, typename K>

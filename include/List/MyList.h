@@ -2,6 +2,7 @@
 #define MYLIST_H_INCLUDED
 
 #include "Element.h"
+#include <ostream>
 
 template<typename T>
 class MyList

@@ -1,5 +1,5 @@
-#ifndef HEAP_H_INCLUDED
-#define HEAP_H_INCLUDED
+#ifndef MINHEAP_H_INCLUDED
+#define MINHEAP_H_INCLUDED
 
 #include "BinaryTree.h"
 
@@ -137,4 +137,4 @@ inline T* MinHeap<T, K>::heapSort(T *arr, int length) {
 }
 
 
-#endif // HEAP_H_INCLUDED
+#endif // MINHEAP_H_INCLUDED

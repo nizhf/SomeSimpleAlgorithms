@@ -1,14 +1,14 @@
 #include <iostream>
-#include <time.h>
+#include <ctime>
 #include <Windows.h>
-#include <stdlib.h>
+#include <cstdlib>
 
-#include "Sort/SortAlgorithm.h"
-#include "Graph/GraphMatrix.h"
-#include "Graph/GraphList.h"
-#include "List/MyList.h"
-#include "Tree/Heap.h"
-#include "Tree/AVLTree.h"
+#include "SortAlgorithm.h"
+#include "GraphList.h"
+#include "GraphMatrix.h"
+#include "MyList.h"
+#include "MinHeap.h"
+#include "AVLTree.h"
 
 using namespace std;
 

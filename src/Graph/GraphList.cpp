@@ -1,68 +1,6 @@
-#ifndef GRAPHLIST_H_INCLUDED
-#define GRAPHLIST_H_INCLUDED
+#include "GraphList.h"
 
-#include <limits.h>
-#include "../List/MyList.h"
-#include "Graph.h"
-#include "../List/MyPriorityQueueList.h"
-
-
-class GraphList : public Graph
-{
-public:
-    GraphList(int v = 10, bool directed = true);
-    ~GraphList();
-
-    void createEmptyGraph();
-    bool generateRandomEdges(int maxRange, int rate);
-
-    bool addVertex();
-    bool deleteVertex(int v);
-
-    bool addEdge(int v1, int v2, int range = 1);
-    bool deleteEdge(int v1, int v2);
-
-    int getEdge(int v1, int v2) const;
-    int getEdgeCount(int v) const;
-
-    int getTotalVertex() const;
-    int getTotalEdge() const;
-
-    int getVertexNumberAt(int index) const;
-
-    void initializeNode();
-    bool isConnected();
-    bool isCycle();
-    bool isTree();
-
-    bool DFS(int v); //true - meet a visited vertex; false - not
-
-    MyList<int>* dijkstra(int v1, int v2);
-    GraphList* prim();
-
-
-private:
-    struct Node {
-        int number;
-        bool visited;
-        int accDistance;
-        int prev;
-        bool primAdded;
-    };
-    struct Edge {
-        int from;
-        int to;
-        int distance;
-    };
-    int vNumber;
-    MyList<MyList<int> *> *edgeList;
-    MyList<Node *> *nodeList;
-
-    bool directed;
-
-};
-
-inline GraphList::GraphList(int v, bool directed) : directed(directed) {
+GraphList::GraphList(int v, bool directed) : directed(directed) {
     int vMax = v > 0? v : 0;
     vNumber = 0;
     nodeList = new MyList<Node *>;
@@ -71,18 +9,18 @@ inline GraphList::GraphList(int v, bool directed) : directed(directed) {
         addVertex();
 }
 
-inline GraphList::~GraphList() {
+GraphList::~GraphList() {
     for (int i = 0; i < getTotalVertex(); i++)
         deleteVertex(getVertexNumberAt(i));
     delete nodeList;
     delete edgeList;
 }
 
-inline void GraphList::createEmptyGraph() {
+void GraphList::createEmptyGraph() {
 
 }
 
-inline bool GraphList::generateRandomEdges(int maxRange, int rate) {
+bool GraphList::generateRandomEdges(int maxRange, int rate) {
     srand((unsigned)time(0));
     if (directed) {
         for (int i = 0; i < getTotalVertex(); i++) {
@@ -107,7 +45,7 @@ inline bool GraphList::generateRandomEdges(int maxRange, int rate) {
     return true;
 }
 
-inline bool GraphList::addVertex() {
+bool GraphList::addVertex() {
     Node *newNode = new Node{vNumber, false, INT_MAX, -1, false};
     nodeList->pushBack(newNode, vNumber);
     MyList<int> *newList = new MyList<int>;
@@ -116,7 +54,7 @@ inline bool GraphList::addVertex() {
     return true;
 }
 
-inline bool GraphList::deleteVertex(int v) {
+bool GraphList::deleteVertex(int v) {
     bool found = false;
     for (int i = 0; i < getTotalVertex(); i++) {
         if (nodeList->keyAt(i) == v) {
@@ -136,7 +74,7 @@ inline bool GraphList::deleteVertex(int v) {
     return true;
 }
 
-inline bool GraphList::addEdge(int v1, int v2, int range) {
+bool GraphList::addEdge(int v1, int v2, int range) {
     if (range < 1)
         return false;
     bool found1 = false;
@@ -162,7 +100,7 @@ inline bool GraphList::addEdge(int v1, int v2, int range) {
     }
 }
 
-inline bool GraphList::deleteEdge(int v1, int v2) {
+bool GraphList::deleteEdge(int v1, int v2) {
     bool found1 = false;
     for (int i = 0; i < getTotalVertex(); i++) {
         if (nodeList->keyAt(i) == v1) {
@@ -182,7 +120,7 @@ inline bool GraphList::deleteEdge(int v1, int v2) {
     }
 }
 
-inline int GraphList::getEdge(int v1, int v2) const {
+int GraphList::getEdge(int v1, int v2) const {
     bool found1 = false;
     bool found2 = false;
     for (int i = 0; i < getTotalVertex(); i++) {
@@ -204,7 +142,7 @@ inline int GraphList::getEdge(int v1, int v2) const {
     }
 }
 
-inline int GraphList::getEdgeCount(int v) const {
+int GraphList::getEdgeCount(int v) const {
     bool found = false;
     for (int i = 0; i < getTotalVertex(); i++) {
         if (nodeList->keyAt(i) == v) {
@@ -218,11 +156,11 @@ inline int GraphList::getEdgeCount(int v) const {
     return edgeList->search(v)->size();
 }
 
-inline int GraphList::getTotalVertex() const {
+int GraphList::getTotalVertex() const {
     return nodeList->size();
 }
 
-inline int GraphList::getTotalEdge() const {
+int GraphList::getTotalEdge() const {
     int e = 0;
     for (int i = 0; i < edgeList->size(); i++) {
         e += edgeList->at(i)->size();
@@ -233,13 +171,13 @@ inline int GraphList::getTotalEdge() const {
         return e / 2;
 }
 
-inline int GraphList::getVertexNumberAt(int index) const {
+int GraphList::getVertexNumberAt(int index) const {
     if (index < 0 || index >= getTotalVertex())
         return -1;
     return nodeList->keyAt(index);
 }
 
-inline void GraphList::initializeNode() {
+void GraphList::initializeNode() {
     for (int i = 0; i < nodeList->size(); i++) {
         nodeList->at(i)->visited = false;
         nodeList->at(i)->accDistance = INT_MAX;
@@ -248,7 +186,7 @@ inline void GraphList::initializeNode() {
     }
 }
 
-inline bool GraphList::isConnected() {
+bool GraphList::isConnected() {
     initializeNode();
     DFS(getVertexNumberAt(0));
     for (int i = 0; i < getTotalVertex(); i++) {
@@ -259,7 +197,7 @@ inline bool GraphList::isConnected() {
 
 }
 
-inline bool GraphList::isCycle() {
+bool GraphList::isCycle() {
     initializeNode();
     for (int i = 0; i < getTotalVertex(); i++) {
         initializeNode();
@@ -269,11 +207,11 @@ inline bool GraphList::isCycle() {
     return false;
 }
 
-inline bool GraphList::isTree() {
+bool GraphList::isTree() {
     return !isCycle() && isConnected();
 }
 
-inline bool GraphList::DFS(int v) {
+bool GraphList::DFS(int v) {
     bool meet = false;
     if (nodeList->search(v)->visited) return true;
     nodeList->search(v)->visited = true;
@@ -285,7 +223,7 @@ inline bool GraphList::DFS(int v) {
     return meet;
 }
 
-inline MyList<int>* GraphList::dijkstra(int v1, int v2) {
+MyList<int>* GraphList::dijkstra(int v1, int v2) {
     bool found1 = false;
     bool found2 = false;
     for (int i = 0; i < getTotalVertex(); i++) {
@@ -333,7 +271,7 @@ inline MyList<int>* GraphList::dijkstra(int v1, int v2) {
     return path;
 }
 
-inline GraphList* GraphList::prim() {
+GraphList* GraphList::prim() {
     GraphList *mst = new GraphList(0, directed);
 
     for (int i = 0, ii = 0; i < vNumber; i++) {
@@ -383,5 +321,3 @@ inline GraphList* GraphList::prim() {
 
 }
 
-
-#endif // GRAPHLIST_H_INCLUDED

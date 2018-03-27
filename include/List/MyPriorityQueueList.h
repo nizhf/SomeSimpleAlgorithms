@@ -8,7 +8,6 @@ class MyPriorityQueueList : public MyList<T>
 {
 public:
     MyPriorityQueueList();
-    ~MyPriorityQueueList();
 
     T extractMin();
     T minimum();
@@ -21,11 +20,6 @@ private:
 
 template<typename T>
 inline MyPriorityQueueList<T>::MyPriorityQueueList() {
-
-}
-
-template<typename T>
-inline MyPriorityQueueList<T>::~MyPriorityQueueList() {
 
 }
 
