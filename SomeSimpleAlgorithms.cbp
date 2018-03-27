@@ -13,10 +13,11 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="include/Graph" />
+					<Add directory="include" />
+					 <!--<Add directory="include/Graph" />
 					<Add directory="include/List" />
 					<Add directory="include/Sort" />
-					<Add directory="include/Tree" />
+					<Add directory="include/Tree" />-->
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -26,10 +27,11 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add directory="include/Graph" />
+					<Add directory="include" />
+					 <!--<Add directory="include/Graph" />
 					<Add directory="include/List" />
 					<Add directory="include/Sort" />
-					<Add directory="include/Tree" />
+					<Add directory="include/Tree" />-->
 				</Compiler>
 				<Linker>
 					<Add option="-s" />

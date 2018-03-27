@@ -3,8 +3,8 @@
 
 #include <climits>
 #include "Graph.h"
-#include "MyList.h"
-#include "MyPriorityQueueList.h"
+#include "List/MyList.h"
+#include "List/MyPriorityQueueList.h"
 
 class GraphList : public Graph
 {

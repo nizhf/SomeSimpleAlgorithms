@@ -2,7 +2,7 @@
 #define BINARYTREE_H_INCLUDED
 
 #include <functional>
-#include "MyQueue.h"
+#include "List/MyQueue.h"
 
 template<typename T, typename K>
 class BinaryTree {

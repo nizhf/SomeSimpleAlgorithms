@@ -1,4 +1,4 @@
-#include "GraphList.h"
+#include "Graph/GraphList.h"
 
 GraphList::GraphList(int v, bool directed) : directed(directed) {
     int vMax = v > 0? v : 0;

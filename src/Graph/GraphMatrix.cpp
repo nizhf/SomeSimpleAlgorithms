@@ -1,4 +1,4 @@
-#include "GraphMatrix.h"
+#include "Graph/GraphMatrix.h"
 
 GraphMatrix::GraphMatrix(int v) : v(v) {
     if (this->v < 1)

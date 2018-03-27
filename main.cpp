@@ -3,12 +3,12 @@
 #include <Windows.h>
 #include <cstdlib>
 
-#include "SortAlgorithm.h"
-#include "GraphList.h"
-#include "GraphMatrix.h"
-#include "MyList.h"
-#include "MinHeap.h"
-#include "AVLTree.h"
+#include "Sort/SortAlgorithm.h"
+#include "Graph/GraphList.h"
+#include "Graph/GraphMatrix.h"
+#include "List/MyList.h"
+#include "Tree/MinHeap.h"
+#include "Tree/AVLTree.h"
 
 using namespace std;
 

@@ -85,11 +85,11 @@
 	<ctime>
 	<cstdlib>
 
-1522163567 e:\workspace\codeblocks\somesimplealgorithms\include\graph\graphlist.h
+1522164459 e:\workspace\codeblocks\somesimplealgorithms\include\graph\graphlist.h
 	<climits>
 	"Graph.h"
-	"MyList.h"
-	"MyPriorityQueueList.h"
+	"List/MyList.h"
+	"List/MyPriorityQueueList.h"
 
 1522163681 e:\workspace\codeblocks\somesimplealgorithms\include\list\mylist.h
 	"Element.h"
@@ -115,14 +115,14 @@
 1522160880 e:\workspace\codeblocks\somesimplealgorithms\include\tree\binarysearchtree.h
 	"BinaryTree.h"
 
-1522163454 source:e:\workspace\codeblocks\somesimplealgorithms\src\graph\graph.cpp
-	"Graph.h"
+1522164439 source:e:\workspace\codeblocks\somesimplealgorithms\src\graph\graph.cpp
+	"Graph/Graph.h"
 
-1522163660 source:e:\workspace\codeblocks\somesimplealgorithms\src\graph\graphmatrix.cpp
-	"GraphMatrix.h"
+1522164447 source:e:\workspace\codeblocks\somesimplealgorithms\src\graph\graphmatrix.cpp
+	"Graph/GraphMatrix.h"
 
-1522163595 source:e:\workspace\codeblocks\somesimplealgorithms\src\graph\graphlist.cpp
-	"GraphList.h"
+1522164443 source:e:\workspace\codeblocks\somesimplealgorithms\src\graph\graphlist.cpp
+	"Graph/GraphList.h"
 
 1522160283 source:e:\workspace\codeblocks\somesimplealgorithms\src\list\mylist.cpp
 	"MyList.h"
