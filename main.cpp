@@ -2,6 +2,7 @@
 #include <ctime>
 #include <Windows.h>
 #include <cstdlib>
+#include <vector>
 
 #include "Sort/SortAlgorithm.h"
 #include "Graph/GraphList.h"
@@ -9,6 +10,8 @@
 #include "List/MyList.h"
 #include "Tree/MinHeap.h"
 #include "Tree/AVLTree.h"
+#include "gtest/gtest.h"
+
 
 using namespace std;
 
@@ -21,11 +24,11 @@ void printGraphList(GraphList *g);
 void showMinHeap();
 void showAVLTree();
 
-int main()
+int main(int argc, char **argv)
 {
     bool exit = false;
     do {
-        cout << "\nMain Menu\n1. Sort algorithm\n2. List\n3. Graph Matrix\n4. Graph List\n5. Min Heap\n6. AVL Tree\nOther. Exit\n";
+        cout << "\nMain Menu\n1. Sort algorithm\n2. List\n3. Graph Matrix\n4. Graph List\n5. Min Heap\n6. AVL Tree\n7. Google Unit Test\nOther. Exit\n";
         int option;
         exit = false;
         cin >> option;
@@ -48,6 +51,10 @@ int main()
         case 6:
             showAVLTree();
             break;
+        case 7:
+            ::testing::InitGoogleTest(&argc, argv);
+            return RUN_ALL_TESTS();
+            break;
         default:
             exit = true;
             break;
@@ -56,6 +63,20 @@ int main()
     while (!exit);
 
     return 0;
+}
+
+TEST(SortAlgorithm, SameAsSTL) {
+    int arr[2000];
+    vector<int> vec(2000);
+    srand((unsigned)time(NULL));
+    for (int i = 0; i < 2000; i++) {
+        arr[i] = rand();
+        vec[i] = arr[i];
+    }
+    sort(vec.begin(), vec.end());
+    SortAlgorithm<int>::quickSort(arr, 0, 1999);
+    for (int i = 0; i < 2000; i++)
+        EXPECT_EQ(arr[i], vec[i]);
 }
 
 void showSort() {

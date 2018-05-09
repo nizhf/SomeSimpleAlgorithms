@@ -7,17 +7,17 @@
 	<stdlib.h>
 	"MyList.h"
 
-1522163806 source:e:\workspace\codeblocks\somesimplealgorithms\main.cpp
+1522164485 source:e:\workspace\codeblocks\somesimplealgorithms\main.cpp
 	<iostream>
 	<ctime>
 	<Windows.h>
 	<cstdlib>
-	"SortAlgorithm.h"
-	"GraphList.h"
-	"GraphMatrix.h"
-	"MyList.h"
-	"MinHeap.h"
-	"AVLTree.h"
+	"Sort/SortAlgorithm.h"
+	"Graph/GraphList.h"
+	"Graph/GraphMatrix.h"
+	"List/MyList.h"
+	"Tree/MinHeap.h"
+	"Tree/AVLTree.h"
 
 1521464586 e:\workspace\codeblocks\somesimplealgorithms\sortalgorithm.h
 
@@ -103,9 +103,9 @@
 1522162917 e:\workspace\codeblocks\somesimplealgorithms\include\tree\minheap.h
 	"BinaryTree.h"
 
-1522163776 e:\workspace\codeblocks\somesimplealgorithms\include\tree\binarytree.h
+1522164467 e:\workspace\codeblocks\somesimplealgorithms\include\tree\binarytree.h
 	<functional>
-	"MyQueue.h"
+	"List/MyQueue.h"
 
 1521477677 e:\workspace\codeblocks\somesimplealgorithms\include\list\myqueue.h
 
